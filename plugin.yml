@@ -1,0 +1,8 @@
+name: Sounds
+main: io.github.xenopyax.sounds.Main
+version: 1.2.8a
+author: XenoPyax
+
+commands:
+  sounds:
+    description: Open the sounds gui to play sounds from
