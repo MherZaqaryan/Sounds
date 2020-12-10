@@ -4,17 +4,17 @@ Github: https://github.com/XenoPyax
 Discord: XenoPyax#5647
 */
 
-package io.github.xenopyax.sounds.api.nms;
+package io.github.xenopyax.sounds.nms;
 
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 
-public class ItemUtils1_12_R1 {
+public class ItemUtils1_8_R3 {
 	
 	public static ItemStack setHiddenData(ItemStack item, String key, Object value) {
-		net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound itemcompound = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
 		itemcompound.setString(key, value.toString());
 		nmsItem.setTag(itemcompound);
@@ -23,7 +23,7 @@ public class ItemUtils1_12_R1 {
 	}
 	
 	public static NBTTagCompound getNBT(ItemStack item) {
-		net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound itemcompound = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
 		return itemcompound;
 	}

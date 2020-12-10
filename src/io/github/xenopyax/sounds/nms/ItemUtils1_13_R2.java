@@ -4,7 +4,7 @@ Github: https://github.com/XenoPyax
 Discord: XenoPyax#5647
 */
 
-package io.github.xenopyax.sounds.api.nms;
+package io.github.xenopyax.sounds.nms;
 
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;

@@ -22,7 +22,7 @@ public class SoundsCMD implements CommandExecutor {
 			return true;
 		}else {
 			Player player = (Player)sender;
-			player.openInventory(Main.getInvs().get(1));
+			player.openInventory(Main.getInstance().getDefaultInv().get(1));
 		}
 		return true;
 		
