@@ -15,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.xenopyax.sounds.commands.SoundsCMD;
 import io.github.xenopyax.sounds.data.SoundsInventory;
-import io.github.xenopyax.sounds.events.InvClickEvent;
+import io.github.xenopyax.sounds.events.InvEvent;
 import io.github.xenopyax.xenoapi.XenoAPI;
 
 public class Main extends JavaPlugin {
@@ -35,7 +35,7 @@ public class Main extends JavaPlugin {
 		defaultInv = new SoundsInventory();
 		
 		getCommand("sounds").setExecutor(new SoundsCMD());
-		Bukkit.getPluginManager().registerEvents(new InvClickEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new InvEvent(), this);
 	}
 	
 	public static Main getInstance() {
@@ -54,7 +54,7 @@ public class Main extends JavaPlugin {
 		return defaultInv;
 	}
 
-	public static Map<UUID, SoundsInventory> getPlayerInvs() {
+	public Map<UUID, SoundsInventory> getPlayerInvs() {
 		return playerInvs;
 	}
 

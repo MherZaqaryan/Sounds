@@ -36,7 +36,7 @@ import io.github.xenopyax.xenoapi.api.XItem;
 
 public class SoundsInventory {
 	
-	private static Map<Integer, Inventory> invs = new HashMap<>();
+	private Map<Integer, Inventory> invs = new HashMap<>();
 	
 	public SoundsInventory() {
 		generateInventories(null);
@@ -47,7 +47,7 @@ public class SoundsInventory {
 	}
 	
 	private void generateInventories(String filter) {
-		int maxPages = (Sound.values().length / 45);
+		int maxPages = getMaxPages(filter);
 		int page = 1;
 		int slot = 0;
 		
@@ -124,6 +124,16 @@ public class SoundsInventory {
 		invs.put(page, inv);
 	}
 	
+	private int getMaxPages(String filter) {
+		int sounds = 0;
+		for(Sound s : Sound.values()) {
+			if(filter == null || s.name().toLowerCase().contains(filter.toLowerCase())) {
+				sounds++;
+			}
+		}
+		return (sounds / 45) < 1 ? 1 : (sounds / 45);
+	}
+
 	private String localize(String name) {
 		String localized = "";
 		for(String split : name.split("_")) {
