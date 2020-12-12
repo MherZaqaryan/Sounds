@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import io.github.xenopyax.sounds.Main;
+import io.github.xenopyax.sounds.data.SoundsInventory;
 
 public class SoundsCMD implements CommandExecutor {
 	
@@ -22,7 +23,13 @@ public class SoundsCMD implements CommandExecutor {
 			return true;
 		}else {
 			Player player = (Player)sender;
-			player.openInventory(Main.getInstance().getDefaultInv().get(1));
+			if(!Main.getSoundSettings().containsKey(player.getUniqueId())) {
+				Main.getSoundSettings().put(player.getUniqueId(), 1.0f);
+			}
+			if(!Main.getInstance().getPlayerInvs().containsKey(player.getUniqueId())) {
+				Main.getInstance().getPlayerInvs().put(player.getUniqueId(), new SoundsInventory(player));
+			}
+			Main.getInstance().getPlayerInvs().get(player.getUniqueId()).open(player, 1);
 		}
 		return true;
 		

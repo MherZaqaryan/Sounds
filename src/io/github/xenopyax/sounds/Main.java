@@ -22,8 +22,8 @@ public class Main extends JavaPlugin {
 	
 	private static Main instance;
 	private static String version;
-	private static SoundsInventory defaultInv;
 	private static Map<UUID, SoundsInventory> playerInvs = new HashMap<>();
+	private static Map<UUID, Float> soundSettings = new HashMap<>();
 	
 	private static XenoAPI api;
 	
@@ -32,7 +32,6 @@ public class Main extends JavaPlugin {
 		instance = this;
 		api = new XenoAPI(this);
 		version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-		defaultInv = new SoundsInventory();
 		
 		getCommand("sounds").setExecutor(new SoundsCMD());
 		Bukkit.getPluginManager().registerEvents(new InvEvent(), this);
@@ -50,12 +49,12 @@ public class Main extends JavaPlugin {
 		return api;
 	}
 
-	public SoundsInventory getDefaultInv() {
-		return defaultInv;
-	}
-
 	public Map<UUID, SoundsInventory> getPlayerInvs() {
 		return playerInvs;
+	}
+
+	public static Map<UUID, Float> getSoundSettings() {
+		return soundSettings;
 	}
 
 }

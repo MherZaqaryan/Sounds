@@ -6,12 +6,17 @@ Discord: XenoPyax#5647
 
 package io.github.xenopyax.sounds.data;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -38,26 +43,25 @@ public class SoundsInventory {
 	
 	private Map<Integer, Inventory> invs = new HashMap<>();
 	
-	public SoundsInventory() {
-		generateInventories(null);
+	public SoundsInventory(Player player) {
+		generateInventories(player, null);
 	}
 	
-	public SoundsInventory(String filter) {
-		generateInventories(filter);
+	public SoundsInventory(Player player, String filter) {
+		generateInventories(player, filter);
 	}
 	
-	private void generateInventories(String filter) {
+	private void generateInventories(Player player, String filter) {
 		int maxPages = getMaxPages(filter);
 		int page = 1;
 		int slot = 0;
 		
-		Inventory inv = Bukkit.createInventory(null, 54, "Sounds | Page " + page + "/" + maxPages);
+		Inventory inv = Bukkit.createInventory(player, 54, "Sounds | Page " + page + "/" + maxPages);
 		for(Sound sound : Sound.values()) {
 			if(slot < 45) {
 				ItemStack item = new XItem(Material.WOOL, (byte)3).setName("§aPlay §3" + localize(sound.name()))
 						.addItemFlag(ItemFlag.HIDE_ATTRIBUTES).build();
 				if(filter == null || sound.name().toLowerCase().contains(filter.toLowerCase())) {
-					// TODO: implemtn version independecy
 					if(Main.getInstance().getVersion().equals("v1_16_R3")) {
 						inv.setItem(slot, ItemUtils1_16_R3.setHiddenData(item, "sound", sound.name()));
 					}else if(Main.getInstance().getVersion().equals("v1_16_R2")) {
@@ -102,6 +106,8 @@ public class SoundsInventory {
 				}
 				
 				if(page > 1) inv.setItem(45, new XItem().setName("§aPrevious Page").setType(Material.ARROW).build());
+				List<String> lore = Arrays.asList("§6Pitch: " + Main.getSoundSettings().get(player.getUniqueId()), "§cRight-click: -0.1", "§aLeft-click: +0.1");
+				inv.setItem(47, new XItem().setName("§aAdjust Pitch").setLore(lore).setType(Material.REDSTONE_TORCH_ON).build());
 				inv.setItem(49, new XItem(Material.STAINED_GLASS_PANE, (byte)14).setName("§cClose Page").setType(Material.STAINED_GLASS_PANE).build());
 				inv.setItem(51, new XItem().setType(Material.SIGN).setName("§bSearch").build());
 				if(page < maxPages) inv.setItem(53, new XItem().setName("§aNext Page").setType(Material.ARROW).build());
@@ -118,6 +124,7 @@ public class SoundsInventory {
 		}
 		
 		if(page > 1) inv.setItem(45, new XItem().setName("§aPrevious Page").setType(Material.ARROW).build());
+		inv.setItem(47, new XItem().setName("§aAdjust Pitch").setLore(Arrays.asList("§6Pitch: %pitch%", "§cRight-click: -0.1", "§aLeft-click: +0.1")).setType(Material.REDSTONE_TORCH_ON).build());
 		inv.setItem(49, new XItem(Material.STAINED_GLASS_PANE, (byte)14).setName("§cClose Page").setType(Material.STAINED_GLASS_PANE).build());
 		inv.setItem(51, new XItem().setType(Material.SIGN).setName("§bSearch").build());
 		if(page < maxPages) inv.setItem(53, new XItem().setName("§aNext Page").setType(Material.ARROW).build());
@@ -149,6 +156,23 @@ public class SoundsInventory {
 
 	public Inventory get(int i) {
 		return invs.get(i);
+	}
+
+	public void open(Player player, int page) {
+		Inventory inv = invs.get(page);
+		updatePitch(player, inv, inv.getItem(47), Main.getSoundSettings().get(player.getUniqueId()));
+		player.openInventory(inv);
+	}
+	
+	private void updatePitch(Player player, Inventory inventory, ItemStack item, float pitch) {
+		XItem xitem = new XItem(item);
+		List<String> lore = item.getItemMeta().getLore();
+		List<String> temp = new ArrayList<>();
+		String lore1 = "§6Pitch: " + new DecimalFormat("0.0").format(pitch);
+		lore.remove(0);
+		temp.add(lore1);
+		temp.addAll(lore);
+		inventory.setItem(47, xitem.setLore(temp).build());		
 	}
 
 }
